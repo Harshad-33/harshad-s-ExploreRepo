@@ -1,0 +1,134 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class project {
+    public static void main(String[] args) {
+        InventoryManager manager = new InventoryManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Inventory Management System:");
+            System.out.println("1. Add Item");
+            System.out.println("2. Display Items");
+            System.out.println("3. Update Item");
+            System.out.println("4. Remove Item");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = scanner.nextInt();
+                    System.out.print("Enter Name: ");
+                    String name = scanner.next();
+                    System.out.print("Enter Quantity: ");
+                    int quantity = scanner.nextInt();
+                    System.out.print("Enter Price: ");
+                    double price = scanner.nextDouble();
+
+                    Item item = new Item(id, name, quantity, price);
+                    manager.addItem(item);
+                    System.out.println("Item added!");
+                    break;
+
+                case 2:
+                    manager.displayItems();
+                    break;
+
+                case 3:
+                    System.out.print("Enter ID of item to update: ");
+                    id = scanner.nextInt();
+                    System.out.print("Enter new Quantity: ");
+                    quantity = scanner.nextInt();
+                    System.out.print("Enter new Price: ");
+                    price = scanner.nextDouble();
+
+                    manager.updateItem(id, quantity, price);
+                    break;
+
+                case 4:
+                    System.out.print("Enter ID of item to remove: ");
+                    id = scanner.nextInt();
+                    manager.removeItem(id);
+                    break;
+
+                case 5:
+                    System.out.println("Exiting system...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}
+class Item {
+            private int id;
+            private String name;
+            private int quantity;
+            private double price;
+        
+            public Item(int id, String name, int quantity, double price) {
+                this.id = id;
+                this.name = name;
+                this.quantity = quantity;
+                this.price = price;
+            }
+        
+            public int getId() { 
+                return id; 
+            }
+            public String getName() {
+                return name; 
+            }
+            public int getQuantity() { 
+                return quantity; 
+            }
+            public double getPrice() { 
+                return price; 
+            }
+        
+            public void setQuantity(int quantity) { 
+                this.quantity = quantity; 
+            }
+            public void setPrice(double price) { 
+                this.price = price; 
+            }
+        
+            public String toString() {
+                return "ID: " + id + ", Name: " + name + ", Quantity: " + quantity + ", Price: $" + price;
+        }
+   }
+    class InventoryManager {
+       private ArrayList<Item> items;
+       public InventoryManager() {
+           items = new ArrayList<>();
+       }
+       public void addItem(Item item) {
+           items.add(item);
+       }
+       public void displayItems() {
+           for (Item item : items) {
+               System.out.println(item);
+           }
+       }
+       public void updateItem(int id, int quantity, double price) {
+           for (Item item : items) {
+               if (item.getId() == id) {
+                   item.setQuantity(quantity);
+                   item.setPrice(price);
+                   System.out.println("Item updated!");
+                   return;
+               }
+           }
+           System.out.println("Item not found.");
+       }
+       public void removeItem(int id) {
+           items.removeIf(item -> item.getId() == id);
+           System.out.println("Item removed!");
+       }
+   }
